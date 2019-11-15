@@ -1,5 +1,5 @@
 <template>
-    <div class="file-manager-wrapper">
+    <div class="file-manager-wrapper" v-if="account"> 
         <div class="input-wrapper">
             <span class="account-label">{{account.business_name}}</span>
             <input type="text" class="input" disabled>

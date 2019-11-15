@@ -1,5 +1,5 @@
 <template>
-    <div class="uploader">
+    <div class="uploader" v-if="account">
         <div class="processing" v-if="processing"><Spinner class="spinner" /></div>
         <div class="triangle"></div>
         <div class="client-info">
@@ -29,7 +29,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['upload_success', 'processing', 'client'])
+        ...mapGetters(['upload_success', 'processing', 'client', 'account'])
     },
     methods: {
         sendFiles(data) {

@@ -59,7 +59,7 @@ export default new Vuex.Store({
   },
   actions: {
     getAccount(context) {
-      axios.get('http://sitebox.traxit.test/api/account')
+      axios.get('http://'+router.history.current.query.fqdn+'.traxit.test/api/account')
       .then(response => {
         context.commit('SET_ACCOUNT', response.data[0])
       })

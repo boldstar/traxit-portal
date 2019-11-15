@@ -2,9 +2,9 @@
     <header class="heading">
         <a href="/" class="nav-logo"><img src="../assets/logo.png" alt="logo" class="nav-logo-img"></a>
         <nav class="nav">
-            <ul class="nav-body">
+            <!-- <ul class="nav-body">
                 <li><a href="#" class="nav-link">Login</a></li>
-            </ul>
+            </ul> -->
         </nav>
     </header>
 </template>

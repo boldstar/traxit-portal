@@ -1,7 +1,8 @@
 <template>
   <div class="home">
       <Navbar />
-      <img class="logo" v-if="account.logo" v-bind:src="logo" />
+      <img class="logo" v-if="account && account.logo" v-bind:src="logo"/>
+      <i class="far fa-folder-open fa-5x" v-else></i>
       <Uploader />
   </div>
 </template>
@@ -30,6 +31,11 @@ export default {
   margin-top: 100px;
   height: 100px;
   width: auto;
+}
+
+.fa-folder-open {
+  margin-top: 100px!important;
+  color: #0077ff!important;
 }
 </style>
 
