@@ -59,7 +59,7 @@ export default new Vuex.Store({
   },
   actions: {
     getAccount(context) {
-      axios.get('http://'+router.history.current.query.fqdn+'.traxit.test/api/account')
+      axios.get('https://'+router.history.current.query.fqdn+'.traxit.pro/api/account')
       .then(response => {
         context.commit('SET_ACCOUNT', response.data[0])
       })
@@ -75,7 +75,7 @@ export default new Vuex.Store({
       } formData.append('data', JSON.stringify(data.details))
         formData.append('fqdn', router.history.current.query.fqdn)
       context.commit('PROCESSING')
-      axios.post('http://'+router.history.current.query.fqdn+'.traxit.test/api/files', formData, {headers: {
+      axios.post('https://'+router.history.current.query.fqdn+'.traxit.pro/api/files', formData, {headers: {
         'Content-Type': 'multipart/form-data'
       }})
       .then(response => {
