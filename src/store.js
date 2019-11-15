@@ -75,7 +75,7 @@ export default new Vuex.Store({
       } formData.append('data', JSON.stringify(data.details))
         formData.append('fqdn', router.history.current.query.fqdn)
       context.commit('PROCESSING')
-      axios.post('http://sitebox.traxit.test/api/files', formData, {headers: {
+      axios.post('http://'+router.history.current.query.fqdn+'.traxit.test/api/files', formData, {headers: {
         'Content-Type': 'multipart/form-data'
       }})
       .then(response => {
