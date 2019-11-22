@@ -147,6 +147,8 @@ input[type=text] {
 .vue-drop-wrapper {
     border: 4px dashed rgb(145, 145, 145);
     padding: 6px;
+    max-height: 200px;
+    overflow-y: scroll;
 }
 
 .fa-paper-plane {

@@ -27,6 +27,7 @@ export default {
     this.fileAccount = fqdn
     this.$router.replace({query: {fqdn: fqdn}}).catch(err => {})
     this.$store.dispatch('getAccount')
+    localStorage.setItem('account_fqdn', fqdn)
   }
 }
 </script>
