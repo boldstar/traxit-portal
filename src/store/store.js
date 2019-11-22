@@ -2,12 +2,18 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import Toasted from 'vue-toasted';
-import router from './router'
+import router from '../router'
+import auth from './modules/auth'
 
 Vue.use(Vuex)
 Vue.use(Toasted)
 
+var fqdn = router.history.current.query.fqdn ? router.history.current.query.fqdn : localStorage.getItem('account_fqdn')
+
 export default new Vuex.Store({
+  modules: {
+    auth
+  },
   state: {
     account: null,
     files_state: false,
@@ -59,7 +65,7 @@ export default new Vuex.Store({
   },
   actions: {
     getAccount(context) {
-      axios.get('http://'+router.history.current.query.fqdn+'.traxit.test/api/account')
+      axios.get('http://'+fqdn+'.traxit.test/api/account')
       .then(response => {
         context.commit('SET_ACCOUNT', response.data[0])
       })
@@ -73,9 +79,9 @@ export default new Vuex.Store({
         let file = data.files[i];
         formData.append('files[' + i + ']', file);
       } formData.append('data', JSON.stringify(data.details))
-        formData.append('fqdn', router.history.current.query.fqdn)
+        formData.append('fqdn', fqdn)
       context.commit('PROCESSING')
-      axios.post('http://'+router.history.current.query.fqdn+'.traxit.test/api/files', formData, {headers: {
+      axios.post('http://'+fqdn+'.traxit.test/api/files', formData, {headers: {
         'Content-Type': 'multipart/form-data'
       }})
       .then(response => {

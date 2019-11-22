@@ -1,10 +1,13 @@
 <template>
     <header class="heading">
-        <a href="/" class="nav-logo"><img src="../assets/logo.png" alt="logo" class="nav-logo-img"></a>
+        <div class="nav">
+            <a href="/" class="nav-logo"><img src="../assets/logo.png" alt="logo" class="nav-logo-img"></a>
+            <router-link class="nav-link" to="/">Share Files</router-link>
+        </div>
         <nav class="nav">
-            <!-- <ul class="nav-body">
-                <li><a href="#" class="nav-link">Login</a></li>
-            </ul> -->
+            <ul class="nav-body">
+                <li><router-link to="/login" class="nav-link">Portal Login</router-link></li>
+            </ul>
         </nav>
     </header>
 </template>
@@ -30,6 +33,11 @@ export default {
     .nav-logo {
         align-self: center;
         text-decoration: none;
+        margin-right: 30px;
+    }
+
+    .nav {
+        display: flex;
     }
 
     .nav-logo-img {
@@ -51,5 +59,6 @@ export default {
         font-weight: bold;
         text-decoration: none;
         color: gray;
+        align-self: center;
     }
 </style>

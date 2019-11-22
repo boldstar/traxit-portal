@@ -131,19 +131,6 @@ input[type=text] {
     margin-top: 20px;
 }
 
-.submit-btn {
-    background: #0077ff;
-    font-weight: bold;
-    color: white;
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.25rem;
-    cursor: pointer;
-}
-
 .vue-drop-wrapper {
     border: 4px dashed rgb(145, 145, 145);
     padding: 6px;

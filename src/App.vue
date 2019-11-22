@@ -21,13 +21,17 @@ export default {
   },
   components: {Spinner},
   created() {
-    var name = window.location.href
-    const index = name.indexOf('=')
-    var fqdn = name.slice(index + 1)
-    this.fileAccount = fqdn
-    this.$router.replace({query: {fqdn: fqdn}}).catch(err => {})
+    if(!localStorage.getItem('account_fqdn')) {
+      var name = window.location.href
+      const index = name.indexOf('=')
+      var fqdn = name.slice(index + 1)
+      this.fileAccount = fqdn
+      this.$router.replace({query: {fqdn: fqdn}}).catch(err => {})
+      localStorage.setItem('account_fqdn', fqdn)
+    } else {
+      this.fileAccount = localStorage.getItem('account_fqdn')
+    }
     this.$store.dispatch('getAccount')
-    localStorage.setItem('account_fqdn', fqdn)
   }
 }
 </script>
@@ -58,6 +62,10 @@ export default {
     box-sizing: border-box;
   }
 
+  .router-link-exact-active {
+    color: #0077ff!important;
+  }
+
   .toast-message {
     font-family: 'Open Sans', sans-serif!important;
   }
@@ -80,4 +88,17 @@ export default {
     position: absolute;
     top: 45%;
   }
+
+  .submit-btn {
+    background: #0077ff;
+    font-weight: bold;
+    color: white;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
 </style>
