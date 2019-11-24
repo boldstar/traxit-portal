@@ -1,9 +1,5 @@
 <template>
   <div class="login">
-      <Navbar />
-      <img class="logo" v-if="account && account.logo" v-bind:src="logo"/>
-      <i class="far fa-folder-open fa-5x" v-else></i>
-
       <form class="form">
         <input type="email" placeholder="Username" class="input" v-model="username">
         <input type="password" placeholder="Password" class="input" v-model="password">
@@ -13,13 +9,9 @@
 </template>
 
 <script>
-import Navbar from '@/components/Navbar.vue'
 import {mapGetters} from 'vuex'
 export default {
   name: 'login',
-  components: {
-    Navbar,
-  },
   data() {
     return {
       username: '',

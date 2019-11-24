@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <div v-if="fileAccount">
+    <component :is="layout" v-if="fileAccount"> 
       <router-view/>
-    </div>
+    </component>
     <div class="no-account" v-else>
       <Spinner class="spinner-loader"/>
     </div>
@@ -20,6 +20,11 @@ export default {
     }
   },
   components: {Spinner},
+  computed: {
+    layout() {
+        return 'default-layout';
+    },
+  },
   created() {
     if(!localStorage.getItem('account_fqdn')) {
       var name = window.location.href

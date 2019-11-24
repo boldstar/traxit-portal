@@ -6,7 +6,9 @@
         </div>
         <nav class="nav">
             <ul class="nav-body">
-                <li><router-link to="/login" class="nav-link">Portal Login</router-link></li>
+                <li v-if="loggedIn"><router-link to="/documents" class="nav-link">Manage Files <i class="fas fa-file-invoice"></i></router-link></li>
+                <li v-if="!loggedIn"><router-link to="/login" class="nav-link">Portal Login</router-link></li>
+                <li v-if="loggedIn"><router-link to="/logout" class="nav-link">Logout<i class="fas fa-sign-out-alt"></i></router-link></li>
             </ul>
         </nav>
     </header>
@@ -14,7 +16,12 @@
 
 <script>
 export default {
-
+    name: 'Navbar',
+    computed: {
+        loggedIn() {
+            return this.$store.getters.loggedIn
+        },
+    }
 }
 </script>
 
@@ -60,5 +67,11 @@ export default {
         text-decoration: none;
         color: gray;
         align-self: center;
+    }
+
+    li {
+        .fas {
+            margin-left: 5px;
+        }
     }
 </style>

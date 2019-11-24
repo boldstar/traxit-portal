@@ -13,24 +13,39 @@ export default new Router({
       name: 'home',
       component: Home,
       props: true,
+      meta: {
+        layout: 'default',
+      }
     },
     {
       path: '/login',
       name: 'login',
       component: () => import(/* webpackChunkName: "about" */ './views/Login.vue'),
-      props: true
+      props: true,
+      meta: {
+        layout: 'default',
+        requiresVisitor: true
+      }
     },
     {
       path: '/register',
       name: 'register',
       component: () => import(/* webpackChunkName: "about" */ './views/Register.vue'),
-      props: true
+      props: true,
+      meta: {
+        layout: 'default',
+        requiresVisitor: true
+      }
     },
     {
       path: '/documents',
       name: 'documents',
       component: () => import(/* webpackChunkName: "about" */ './views/Documents.vue'),
-      props: true
+      props: true,
+      meta: {
+        layout: 'default',
+        requiresAuth: true
+      }
     },
   ]
 })

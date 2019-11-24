@@ -1,9 +1,5 @@
 <template>
   <div class="register">
-      <Navbar />
-      <img class="logo" v-if="account && account.logo" v-bind:src="logo"/>
-      <i class="far fa-folder-open fa-5x" v-else></i>
-
       <form class="form">
         <p>Welcome to registration for our portal</p>
         <input type="email" placeholder="Email" class="input" v-model="email" :class="{'input-error': noData && email.length <= 0}">
@@ -14,13 +10,9 @@
 </template>
 
 <script>
-import Navbar from '@/components/Navbar.vue'
 import {mapGetters} from 'vuex'
 export default {
   name: 'register',
-  components: {
-    Navbar,
-  },
   data() {
     return {
       email: '',
