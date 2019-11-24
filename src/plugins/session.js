@@ -32,10 +32,9 @@ export function  destroySession() {
 // used to start the session when user logs in
 export function  startSession(response) {
     // I will use this to create the app session just dont know how yet
-    const token = response.data.rules.access_token
-    const fqdn = response.data.fqdn
+    const token = response.data.access_token
     // if token and fqdn are available set local storage items and return true
-    if(token != null || token != undefined && fqdn != null || fqdn != undefined) {
+    if(token != null || token != undefined) {
     const date = new Date(moment().add(1, 'day').toDate());
     localStorage.setItem('expires_on', date);
     // I have to set the base url here because it wont pick up the localStorage change until the page is refreshed

@@ -5,8 +5,8 @@
       <i class="far fa-folder-open fa-5x" v-else></i>
 
       <form class="form">
-        <input type="text" placeholder="Username" class="input" v-model="username">
-        <input type="text" placeholder="Password" class="input" v-model="password">
+        <input type="email" placeholder="Username" class="input" v-model="username">
+        <input type="password" placeholder="Password" class="input" v-model="password">
         <button type="button" class="submit-btn" @click="login">Login</button>
       </form>
   </div>
@@ -36,7 +36,8 @@ export default {
     login() {
       this.$store.dispatch('retrieveToken', {
         username: this.username,
-        password: this.password
+        password: this.password,
+        provider: 'guests'
       })
     }
   }

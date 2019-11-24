@@ -6,8 +6,8 @@
 
       <form class="form">
         <p>Welcome to registration for our portal</p>
-        <input type="text" placeholder="Username" class="input" v-model="username">
-        <input type="text" placeholder="Password" class="input" v-model="password">
+        <input type="email" placeholder="Email" class="input" v-model="email" :class="{'input-error': noData && email.length <= 0}">
+        <input type="password" placeholder="Password" class="input" v-model="password" :class="{'input-error': noData && password.length <= 9}">
         <button type="button" class="submit-btn" @click="register">Register</button>
       </form>
   </div>
@@ -23,8 +23,10 @@ export default {
   },
   data() {
     return {
-      username: '',
-      password: ''
+      email: '',
+      password: '',
+      client_id: null,
+      noData: false
     }
   },
   computed: {
@@ -35,11 +37,24 @@ export default {
   },
   methods: {
     register() {
+      if(!this.email || !this.password){
+        this.noData = true
+        return
+      }
 
+      this.$store.dispatch('registerGuest', {
+        email: this.email,
+        password: this.password,
+        client_id: this.client_id
+      })
     }
   },
   created() {
-
+    var client_id = JSON.parse(this.$route.query.client_id)
+    if(client_id) {
+      this.client_id = client_id
+      localStorage.setItem('client_id', client_id)
+    }
   }
 }
 </script>
@@ -72,6 +87,10 @@ export default {
   border-radius: 5px;
   box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
   padding: 10px;
+}
+
+.input-error {
+  border: 1px solid red;
 }
 </style>
 

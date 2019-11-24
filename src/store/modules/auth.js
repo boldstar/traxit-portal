@@ -37,6 +37,14 @@ export default {
         },
     },
     actions: {
+        registerGuest(context, data) {
+            axios.post('/guest-register', data)
+            .then(response => {
+                router.push('/login')
+            }).catch(error => {
+                console.log(error.response.data)
+            })
+        },
         destroyToken(context) {
             if (context.getters.loggedIn) {
               return new Promise((resolve, reject) => {
@@ -66,16 +74,16 @@ export default {
                 })
                 .then(response => {
                     console.log(response.data)
-                  commit('clearAlert')
-                  // start session sets a couple of the local storage items and make sure that the response contains the proper data
-                //   if(startSession(response)) {
-                //       setTimeout(() => {
-                //         commit('createSession', response.data.rules);
-                //         localStorage.setItem('access_token', response.data.rules.access_token);
-                //         router.push('/account')
-                //       }, 2000)
-                //     }
-                  resolve(response)
+                    commit('clearAlert')
+                    // start session sets a couple of the local storage items and make sure that the response contains the proper data
+                    if(startSession(response)) {
+                        setTimeout(() => {
+                            commit('createSession', response.data.access_token);
+                            localStorage.setItem('access_token', response.data.access_token);
+                            router.push('/documents')
+                        }, 2000)
+                        }
+                    resolve(response)
                 })
                 .catch(error => {
                   console.log(error.response.data)
