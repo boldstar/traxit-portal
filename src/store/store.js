@@ -5,6 +5,8 @@ import Toasted from 'vue-toasted';
 import router from '../router'
 import auth from './modules/auth'
 import files from './modules/files'
+import {toastError} from '../plugins/toasted'
+import {toastSuccess} from '../plugins/toasted'
 
 Vue.use(Vuex)
 Vue.use(Toasted)
@@ -95,20 +97,7 @@ export default new Vuex.Store({
         Vue.toasted.show('Upload Succesful', {type: 'success', className: 'toast-message'}).goAway(6000);
       }).catch(error => {
         context.commit('PROCESSING')
-        Vue.toasted.show('Oops, something went wrong! Please try again.', 
-        {
-          type: 'error', 
-          className: 'toast-message',
-          action: [
-            {
-              text: 'X',
-              onClick: (e, toastObject) => {
-                toastObject.goAway(0)
-              },
-              className: 'close-btn'
-            }
-          ]
-        })
+        toastError('Oops, something went wrong! Please try again.')
         console.log(error.response.data)
       })
     }

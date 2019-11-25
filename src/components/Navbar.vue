@@ -2,13 +2,13 @@
     <header class="heading">
         <div class="nav">
             <a href="/" class="nav-logo"><img src="../assets/logo.png" alt="logo" class="nav-logo-img"></a>
-            <router-link class="nav-link" to="/">Share Files</router-link>
+            <router-link class="nav-link" to="/">Share Files<i class="fas fa-file-import"></i></router-link>
         </div>
         <nav class="nav">
             <ul class="nav-body">
                 <li v-if="loggedIn"><router-link to="/documents" class="nav-link">Manage Files <i class="fas fa-file-invoice"></i></router-link></li>
-                <li v-if="!loggedIn"><router-link to="/login" class="nav-link">Portal Login</router-link></li>
-                <li v-if="loggedIn"><router-link to="/logout" class="nav-link">Logout<i class="fas fa-sign-out-alt"></i></router-link></li>
+                <li v-if="loggedIn"><a @click="logout" class="nav-link">Logout<i class="fas fa-sign-out-alt"></i></a></li>
+                <li v-if="!loggedIn && $route.path != '/register'"><router-link to="/login" class="nav-link">Portal Login</router-link></li>
             </ul>
         </nav>
     </header>
@@ -21,6 +21,11 @@ export default {
         loggedIn() {
             return this.$store.getters.loggedIn
         },
+    },
+    methods: {
+        logout() {
+            this.$store.dispatch('destroyToken')
+        }
     }
 }
 </script>
@@ -67,9 +72,10 @@ export default {
         text-decoration: none;
         color: gray;
         align-self: center;
+        cursor: pointer;
     }
 
-    li {
+    a {
         .fas {
             margin-left: 5px;
         }

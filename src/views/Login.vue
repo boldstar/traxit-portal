@@ -3,7 +3,10 @@
       <form class="form">
         <input type="email" placeholder="Username" class="input" v-model="username">
         <input type="password" placeholder="Password" class="input" v-model="password">
-        <button type="button" class="submit-btn" @click="login">Login</button>
+        <button type="button" class="submit-btn" @click="login" :disabled="processing">
+           <span v-if="processing">Please wait...</span>
+           <span v-else>Login</span>
+          </button>
       </form>
   </div>
 </template>
@@ -19,7 +22,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['account']),
+    ...mapGetters(['account', 'processing']),
     logo() {
         return `data:image/png;base64, ${this.account.logo}`
       }

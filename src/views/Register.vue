@@ -4,7 +4,10 @@
         <p>Welcome to registration for our portal</p>
         <input type="email" placeholder="Email" class="input" v-model="email" :class="{'input-error': noData && email.length <= 0}">
         <input type="password" placeholder="Password" class="input" v-model="password" :class="{'input-error': noData && password.length <= 9}">
-        <button type="button" class="submit-btn" @click="register">Register</button>
+        <button type="button" class="submit-btn" @click="register" :disabled="processing">
+          <span v-if="processing">Please wait...</span>
+          <span v-else>Register</span>
+        </button>
       </form>
   </div>
 </template>
@@ -22,7 +25,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['account']),
+    ...mapGetters(['account', 'processing']),
     logo() {
         return `data:image/png;base64, ${this.account.logo}`
       }

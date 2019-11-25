@@ -2,6 +2,8 @@ import axios from 'axios'
 import router from '../../router'
 import {destroySession} from '../../plugins/session'
 import {startSession} from '../../plugins/session'
+import {toastError} from '../../plugins/toasted'
+import {toastSuccess} from '../../plugins/toasted'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token')
 
@@ -14,12 +16,12 @@ export default {
     },
     getters: {
         loggedIn(state) {
-            return state.token != null || undefined;
+            return state.token;
           }
     },
     mutations: {
-        createSession(state, session) {
-            state.token = session.access_token
+        createSession(state, token) {
+            state.token = token
           },
         destroyToken(state) {
             state.token = null
@@ -37,35 +39,40 @@ export default {
         },
     },
     actions: {
-        registerGuest(context, data) {
+        registerGuest({commit}, data) {
+            commit('PROCESSING')
             axios.post('/guest-register', data)
             .then(response => {
                 router.push('/login')
+                commit('PROCESSING')
+                toastSuccess('Registration was a success, please login.')
             }).catch(error => {
+                commit('PROCESSING')
                 console.log(error.response.data)
             })
         },
         destroyToken(context) {
             if (context.getters.loggedIn) {
               return new Promise((resolve, reject) => {
-                axios.post('/logout')
+                axios.post('/guest-logout', {'provider': 'guests'})
                 .then(response => {
-                  destroySession()
-                  context.commit('destroyToken')
-                  router.push('/login')
-                  resolve(response)
+                    destroySession()
+                    context.commit('destroyToken')
+                    router.push('/login')
+                    resolve(response)
                 })
                 .catch(error => {
-                  destroySession()
-                  context.commit('destroyToken')
-                  router.push('/login')
-                  reject(error)
+                    console.log(error.response.data)
+                    destroySession()
+                    context.commit('destroyToken')
+                    router.push('/login')
+                    reject(error)
                 })
               })
             }
           },
           retrieveToken({ commit }, credentials) {
-      
+            commit('PROCESSING')
             return new Promise((resolve, reject) => {
                 axios.post('/guest-login', {
                     username: credentials.username,
@@ -73,7 +80,6 @@ export default {
                     fqdn: localStorage.getItem('account_fqdn')
                 })
                 .then(response => {
-                    console.log(response.data)
                     commit('clearAlert')
                     // start session sets a couple of the local storage items and make sure that the response contains the proper data
                     if(startSession(response)) {
@@ -81,14 +87,16 @@ export default {
                             commit('createSession', response.data.access_token);
                             localStorage.setItem('access_token', response.data.access_token);
                             router.push('/documents')
+                            commit('PROCESSING')
                         }, 2000)
-                        }
+                    }
                     resolve(response)
                 })
                 .catch(error => {
-                  console.log(error.response.data)
-                  commit('errorAlert', error.response.data)
-                  reject(error)
+                    console.log(error.response.data)
+                    toastError(error.response.data)
+                    commit('PROCESSING')
+                    reject(error)
                 })
             })
           },
