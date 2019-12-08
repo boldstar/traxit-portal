@@ -4,7 +4,7 @@ import axios from 'axios'
 import Toasted from 'vue-toasted';
 import router from '../router'
 import auth from './modules/auth'
-import files from './modules/files'
+import docs from './modules/docs'
 import {toastError} from '../plugins/toasted'
 import {toastSuccess} from '../plugins/toasted'
 
@@ -16,7 +16,7 @@ var fqdn = router.history.current.query.fqdn ? router.history.current.query.fqdn
 export default new Vuex.Store({
   modules: {
     auth,
-    files
+    docs
   },
   state: {
     account: null,

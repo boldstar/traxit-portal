@@ -1,8 +1,10 @@
 <template>
     <div class="default">
         <Navbar />
-        <img class="logo" v-if="account && account.logo" v-bind:src="logo"/>
-        <i class="far fa-folder-open fa-5x" v-else></i>
+        <div v-if="$route.path != '/documents'">
+            <img class="logo" v-if="account && account.logo" v-bind:src="logo"/>
+            <i class="far fa-folder-open fa-5x" v-else></i>
+        </div>
         <slot/>
     </div>
 </template>

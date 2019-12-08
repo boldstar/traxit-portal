@@ -86,6 +86,7 @@ export default {
                         setTimeout(() => {
                             commit('createSession', response.data.access_token);
                             localStorage.setItem('access_token', response.data.access_token);
+                            axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
                             router.push('/documents')
                             commit('PROCESSING')
                         }, 2000)
