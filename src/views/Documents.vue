@@ -8,12 +8,7 @@
         </div>
         <div class="document">
             document
-            <PDFViewer
-                v-bind="{url}"
-                @document-errored="onDocumentErrored"
-                v-if="current_doc"
-            >
-            </PDFViewer>
+            
         </div>
         <div class="docs-right">
             
@@ -23,17 +18,15 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import PDFUploader from '@/components/PDFUploader.vue'
-import PDFViewer from '@/components/PDFViewer.vue'
+
 export default {
     name: 'Documents',
    components: {
-    PDFUploader,
-    PDFViewer,
+ 
   },
   data() {
     return {
-      documentError: undefined,
+   
     };
   },
     computed: {
@@ -47,13 +40,7 @@ export default {
         }
     },
     methods: {
-    urlUpdated(url) {
-      this.documentError = undefined;
-      this.url = url;
-    },
-    onDocumentErrored(e) {
-      this.documentError = e.text;
-    },
+
   },
     watch: {
         'docs': function(value) {
@@ -82,10 +69,10 @@ export default {
 }
 
 .docs-left {
-    height: calc(100% - 70px);
+    height: calc(100% - 75px);
     width: 300px;
     background: gray;
-    margin-top: 70px;
+    margin-top: 75px;
     z-index: 10;
 
     ul {
@@ -109,10 +96,10 @@ export default {
 
 
 .docs-right {
-    height: calc(100% - 70px);
+    height: calc(100% - 75px);
     width: 300px;
     background: rgb(216, 216, 216);
-    margin-top: 70px;
+    margin-top: 75px;
     z-index: 10;
 }
 
