@@ -8,10 +8,18 @@
         </div>
         <div class="document">
             document
-            <pdf :src="url" v-if="current_doc" />
+            <pdf 
+            v-for="i in numPages"
+			:key="i"
+            :page="i"
+            :src="url" 
+            v-if="current_doc"
+            @num-pages="pageCount = $event"
+			@page-loaded="currentPage = $event"
+             />
         </div>
         <div class="docs-right">
-            
+            <h3 v-if="docs">{{docs[0].document_name}}</h3>
         </div>
     </div>
 </template>
@@ -26,7 +34,9 @@ export default {
   },
   data() {
     return {
-        numOfPages: 0
+        pageCount: 0,
+        currentPage: 0,
+        numPages: undefined
     };
   },
     computed: {
@@ -44,7 +54,7 @@ export default {
             var loadingTask = pdf.createLoadingTask(this.url)
 
             loadingTask.promise.then(pdf => {
-                this.numOfPages = pdf.numPages
+                this.numPages = pdf.numPages
             })
         }
   },
@@ -102,9 +112,14 @@ export default {
     background: rgb(53, 53, 53);
     width: 100%;
 
-    canvas {
-        margin-top: 100px;
+    span {
+        width: 90%;
+
+        canvas {
+            margin-top: 100px;
+        }
     }
+
 }
 
 
