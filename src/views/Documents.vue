@@ -8,7 +8,7 @@
         </div>
         <div class="document">
             document
-            
+            <pdf :src="url" v-if="current_doc" />
         </div>
         <div class="docs-right">
             
@@ -18,15 +18,15 @@
 
 <script>
 import {mapGetters} from 'vuex'
-
+import pdf from 'vue-pdf'
 export default {
     name: 'Documents',
    components: {
- 
+       pdf
   },
   data() {
     return {
-   
+        numOfPages: 0
     };
   },
     computed: {
@@ -40,12 +40,19 @@ export default {
         }
     },
     methods: {
+        viewportAttr() {
+            var loadingTask = pdf.createLoadingTask(this.url)
 
+            loadingTask.promise.then(pdf => {
+                this.numOfPages = pdf.numPages
+            })
+        }
   },
     watch: {
         'docs': function(value) {
             if(value.length > 0) {
                 this.$store.dispatch('getDoc', value[0].id)
+                this.viewportAttr()
             }
         }
     },
@@ -92,6 +99,12 @@ export default {
     flex-grow: 1;
     height: 100%;
     min-height: calc(100% - 70px);
+    background: rgb(53, 53, 53);
+    width: 100%;
+
+    canvas {
+        margin-top: 100px;
+    }
 }
 
 
