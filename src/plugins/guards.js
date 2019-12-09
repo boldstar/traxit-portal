@@ -1,3 +1,6 @@
+import store from '../store/store';
+import {toastError} from './toasted';
+
 // use this globally for each route
 // imported into main.js file
 // checks weather the user is logged in or not and what should happen depending on the route meta data
@@ -11,6 +14,7 @@ export function beforeEachCustom(to, from, next) {
         next({
           path: '/login',
         })
+        toastError('You must be logged in to access documents')
       } else {
         next()
       }
@@ -22,5 +26,7 @@ export function beforeEachCustom(to, from, next) {
       } else {
         next()
       }
+    } else {
+      next()
     }
 }

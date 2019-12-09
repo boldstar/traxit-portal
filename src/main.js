@@ -7,6 +7,7 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import Toasted from 'vue-toasted';
 import { VueEditor } from "vue2-editor";
 import Default from './layouts/Default.vue';
+import {beforeEachCustom} from './plugins/guards'
 
 Vue.config.productionTip = false
 
@@ -15,6 +16,8 @@ Vue.component('vue-editor', VueEditor)
 Vue.component('default-layout', Default);
 
 Vue.use(Toasted)
+
+router.beforeEach(beforeEachCustom)
 
 
 new Vue({

@@ -39,7 +39,8 @@ export default {
         background: rgb(247, 247, 247);
         box-sizing: border-box;
         display: flex;
-        justify-content: space-between
+        justify-content: space-between;
+        z-index: 1000;
     }
 
     .nav-logo {

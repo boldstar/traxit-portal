@@ -15,6 +15,7 @@ export default new Router({
       props: true,
       meta: {
         layout: 'default',
+        sharingFiles: true
       }
     },
     {
