@@ -94,7 +94,6 @@ export default {
                     resolve(response)
                 })
                 .catch(error => {
-                    console.log(error.response.data)
                     toastError(error.response.data)
                     commit('PROCESSING')
                     reject(error)

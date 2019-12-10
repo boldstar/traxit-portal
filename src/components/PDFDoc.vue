@@ -1,5 +1,5 @@
 <template>
-    <div class="document" id="document">
+    <div class="document" id="document"  :class="{'hide-overflow': file && file.payment_required}">
         <pdf 
             v-for="i in numPages"
 			:key="i"
@@ -9,6 +9,7 @@
             @num-pages="pageCount = $event"
 			@page-loaded="currentPage = $event"
         />
+        <PaymentModal v-if="file && file.payment_required" />
         <div v-if="loading" class="loading">
             <Spinner />
             <p>Loading...</p>
@@ -19,10 +20,11 @@
 <script>
 import pdf from 'vue-pdf'
 import Spinner from '@/components/Spinner'
+import PaymentModal from '@/components/PaymentModal'
 export default {
     name: 'PDFDoc',
-    props: ['loaded', 'data'],
-    components: {pdf, Spinner},
+    props: ['loaded', 'data', 'file'],
+    components: {pdf, Spinner, PaymentModal},
     data() {
         return {
             pageCount: 0,
@@ -69,6 +71,7 @@ export default {
     width: 100%;
     overflow-y: scroll;
     margin-top: 70px;
+    position: relative;
 
     span {
         width: 90%;
@@ -80,6 +83,11 @@ export default {
     }
 
 }
+
+.hide-overflow {
+    overflow-y: hidden!important;
+}
+
 /*width*/
 #document::-webkit-scrollbar {
     width: 10px!important;

@@ -56,6 +56,7 @@ export default {
     min-height: 100vh;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
   }
 
   .input {
@@ -105,5 +106,82 @@ export default {
     border-radius: 5px;
     font-size: 1.25rem;
     cursor: pointer;
+}
+
+.validation-container {
+  position: relative;
+
+  .error-text {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    color: red;
+  }
+
+  .error-input {
+    border: 2px solid red;
+  }
+}
+
+.form-header {
+  background: rgb(233, 233, 233);
+  margin: 0;
+  padding: 20px;
+  border-radius: 5px 5px 0 0;
+   p {
+     margin: 0;
+   }
+}
+
+.form-footer {
+  margin-top: 10px;
+  padding: 5px 20px;
+  border-radius: 0 0 5px 5px;
+   .form-footer-body {
+     margin: 0;
+     width: 100%;
+
+     .form-footer-body-section {
+      width: 100%;
+       display: flex;
+       justify-content: space-between;
+       margin-bottom: 8px;
+       border-bottom: 1px solid rgb(233, 233, 233);
+     }
+   }
+}
+
+.form-link {
+  text-decoration: none;
+  color: #0077ff;
+}
+
+.logo {
+  margin-top: 100px;
+  height: 100px;
+  width: auto;
+}
+
+.fa-folder-open {
+  margin-top: 100px!important;
+  color: #0077ff!important;
+}
+
+.register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,.2);
+  padding: 10px;
 }
 </style>

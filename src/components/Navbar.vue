@@ -8,7 +8,7 @@
             <ul class="nav-body">
                 <li v-if="loggedIn"><router-link to="/documents" class="nav-link">Documents <i class="fas fa-file-invoice"></i></router-link></li>
                 <li v-if="loggedIn"><a @click="logout" class="nav-link">Logout<i class="fas fa-sign-out-alt"></i></a></li>
-                <li v-if="!loggedIn && $route.path != '/register'"><router-link to="/login" class="nav-link">Portal Login</router-link></li>
+                <li v-if="!loggedIn && $route.path != '/register'"><router-link to="/login" class="nav-link">Login<i class="fas fa-sign-in-alt"></i></router-link></li>
             </ul>
         </nav>
     </header>

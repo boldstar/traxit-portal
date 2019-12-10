@@ -39,6 +39,15 @@ export default new Router({
       }
     },
     {
+      path: '/reset',
+      name: 'reset',
+      component: () => import(/* webpackChunkName: "about" */ './views/PasswordReset.vue'),
+      props: true,
+      meta: {
+        layout: 'default',
+      }
+    },
+    {
       path: '/documents',
       name: 'documents',
       component: () => import(/* webpackChunkName: "about" */ './views/Documents.vue'),

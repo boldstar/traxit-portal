@@ -11,6 +11,7 @@
                 :data="url"
                 v-if="url"
                 :key="change"
+                :file="doc"
              />
         <div class="docs-right">
             <h3 v-if="doc">{{doc.document_name}}</h3>
@@ -95,10 +96,19 @@ export default {
 
         li {
             background: white;
-            border: 1px solid lightgray;
+            border-top: 1px solid lightgray;
             padding: 15px 10px;
             font-size: .8rem;
             text-align: left;
+            cursor: pointer;
+
+            &:hover {
+                background: lightgray;
+            }
+
+            &:last-of-type {
+                border-bottom: 1px solid lightgray;
+            }
         }
 
         
