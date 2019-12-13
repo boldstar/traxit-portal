@@ -119,7 +119,7 @@ export default {
   }
 
   .error-input {
-    border: 2px solid red;
+    border: 3px solid red;
   }
 }
 

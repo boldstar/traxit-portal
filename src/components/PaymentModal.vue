@@ -3,7 +3,7 @@
         <div class="payment-modal">
             <div class="form-header">
                 <p>
-                    Payment is required before viewing this document
+                    Payment is required before accessing this document
                 </p>
             </div>
             <button type="button" class="submit-btn payment-btn">Make Payment</button>

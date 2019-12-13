@@ -10,6 +10,8 @@ import Default from './layouts/Default.vue';
 import {beforeEachCustom} from './plugins/guards'
 import { ValidationProvider } from 'vee-validate';
 import { ValidationObserver } from 'vee-validate';
+import './plugins/http'
+
 
 Vue.config.productionTip = false
 

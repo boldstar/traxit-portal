@@ -62,7 +62,6 @@ export default {
                     resolve(response)
                 })
                 .catch(error => {
-                    console.log(error.response.data)
                     destroySession()
                     context.commit('destroyToken')
                     router.push('/login')

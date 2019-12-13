@@ -1,5 +1,9 @@
 <template>
-    <div class="document" id="document"  :class="{'hide-overflow': file && file.payment_required}">
+    <div class="document" ref="document"  :class="{'hide-overflow': file && file.payment_required}">
+        <nav class="toolbar">
+            <span>Page: <input type="number" v-model="currentPage" @click="scrollTo($event)" @keyup="scrollTo($event)" :min="1" :max="numPages">/{{numPages}}</span>
+            <span>Zoom: <strong>{{100 + currentZoom + '%  '}}</strong><button class="zoom-btn" type="button" @click="zoomIn()"><i class="fas fa-search-plus"></i></button>|<button class="zoom-btn" type="button" @click="zoomOut"><i class="fas fa-search-minus"></i></button></span>
+        </nav>
         <pdf 
             v-for="i in numPages"
 			:key="i"
@@ -7,7 +11,8 @@
             :src="src"
             v-if="!loading"
             @num-pages="pageCount = $event"
-			@page-loaded="currentPage = $event"
+            :ref="`${i}`"
+            :id="`${i}`"
         />
         <PaymentModal v-if="file && file.payment_required" />
         <div v-if="loading" class="loading">
@@ -32,7 +37,10 @@ export default {
             numPages: undefined,
             pages: [],
             src: '',
-            loading: true
+            loading: true,
+            document: undefined,
+            currentZoom: 0,
+            startingZoom: 90
         }
     },
     methods: {
@@ -43,8 +51,55 @@ export default {
             this.src.promise.then(pdf => {
                 this.loading = false
                 this.numPages = pdf.numPages
+                this.currentPage = 1
+                this.addListener()
             })
         },
+        addListener() {
+            setTimeout(() => {
+                if(this.numPages > 0) {
+                    for(var i = 0; i < this.numPages; i++) {
+                        var span = this.$refs[i+1][0].$el
+                        span.addEventListener('mouseover', (e) => {
+                            this.setPage(e)
+                        })
+                    }
+                } else {
+                    console.log('didnt work')
+                }
+            }, 300)
+        },
+        setPage(e) {
+            let myEvent = e.target.parent || e.currentTarget ;
+            this.currentPage = myEvent.getAttribute('id') ;
+            e.stopPropagation()
+        },
+        scrollTo(event) {
+            var value = event.target.value
+            if(value > 0 && value <= this.numPages) {
+                this.currentPage = event.target.value
+                let page = this.$refs[this.currentPage][0].$el
+                page.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
+            }
+        },
+        zoomIn() {
+            if(this.currentZoom < 50) {
+                this.currentZoom = this.currentZoom+10
+                for(var i = 0; i < this.numPages; i++) {
+                    var page = this.$refs[i+1][0].$el
+                    page.style.width = JSON.stringify(this.startingZoom+this.currentZoom)+'%'
+                }
+            }
+        },
+        zoomOut() {
+            if(this.currentZoom > -50) {
+                this.currentZoom = this.currentZoom-10
+                for(var i = 0; i < this.numPages; i++) {
+                    var page = this.$refs[i+1][0].$el
+                    page.style.width = JSON.stringify(this.startingZoom+this.currentZoom)+'%'
+                }
+            }
+        }
     },
     watch: {
         'data': function(value) {
@@ -57,11 +112,22 @@ export default {
         this.numPages = undefined
         this.pageCount = 0
         this.currentPage = undefined
+        document.removeEventListener('mouseover', this.setPage)
     }
 }
 </script>
 
 <style lang="scss">
+input[type=number] {
+    width: 50px;
+    padding: 5px;
+    margin-right: 5px;
+    border-radius: 3px;
+    border: 1px solid black;
+}
+input[type=number]::-webkit-inner-spin-button {
+  opacity: 1;
+}
 
 .document {
     flex-grow: 1;
@@ -72,6 +138,9 @@ export default {
     overflow-y: scroll;
     margin-top: 70px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     span {
         width: 90%;
@@ -80,6 +149,18 @@ export default {
             margin-top: 25px;
             margin-bottom: 25px;
         }
+    }
+
+    nav {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 5px;
+        height: 50px;
+        width: 100%;
+        box-sizing: border-box;
+        z-index: 1000;
+        background: white;
+        border-bottom: 1px solid black;
     }
 
 }
@@ -114,5 +195,23 @@ export default {
     p {
         color: white;
     }
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+
+    span {
+        align-self: center;
+    }
+}
+
+.zoom-btn {
+    background: none;
+    color: #0077ff;
+    cursor: pointer;
+    border: none;
+    font-size: 1.25rem;
 }
 </style>
