@@ -11,6 +11,7 @@ import {beforeEachCustom} from './plugins/guards'
 import { ValidationProvider } from 'vee-validate';
 import { ValidationObserver } from 'vee-validate';
 import './plugins/http'
+import './plugins/filters'
 
 
 Vue.config.productionTip = false

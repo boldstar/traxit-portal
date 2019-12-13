@@ -26,6 +26,7 @@
 import pdf from 'vue-pdf'
 import Spinner from '@/components/Spinner'
 import PaymentModal from '@/components/PaymentModal'
+import {setPage, scrollTo} from '../plugins/pdfx'
 export default {
     name: 'PDFDoc',
     props: ['loaded', 'data', 'file'],
@@ -52,31 +53,26 @@ export default {
                 this.loading = false
                 this.numPages = pdf.numPages
                 this.currentPage = 1
-                this.addListener()
+                setTimeout(() => {
+                    this.addListener()
+                }, 300)
             })
         },
         addListener() {
-            setTimeout(() => {
-                if(this.numPages > 0) {
-                    for(var i = 0; i < this.numPages; i++) {
-                        var span = this.$refs[i+1][0].$el
-                        span.addEventListener('mouseover', (e) => {
-                            this.setPage(e)
-                        })
-                    }
-                } else {
-                    console.log('didnt work')
+            if(this.numPages > 0) {
+                for(var i = 0; i < this.numPages; i++) {
+                    var span = this.$refs[i+1][0].$el
+                    span.addEventListener('mouseover', (e) => {
+                        this.setPage(e)
+                    })
                 }
-            }, 300)
+            }
         },
         setPage(e) {
-            let myEvent = e.target.parent || e.currentTarget ;
-            this.currentPage = myEvent.getAttribute('id') ;
-            e.stopPropagation()
+            this.currentPage = setPage(e)
         },
         scrollTo(event) {
-            var value = event.target.value
-            if(value > 0 && value <= this.numPages) {
+            if(scrollTo(event, this.numPages)) {
                 this.currentPage = event.target.value
                 let page = this.$refs[this.currentPage][0].$el
                 page.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
@@ -102,7 +98,7 @@ export default {
         }
     },
     watch: {
-        'data': function(value) {
+        data(value) {
             if(this.data) {
                 this.getDoc()
             }

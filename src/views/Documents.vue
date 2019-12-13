@@ -15,6 +15,10 @@
              />
         <div class="docs-right">
             <h3 v-if="doc">{{doc.document_name}}</h3>
+            <div class="doc-details">
+                <span v-if="doc">Shared By: {{doc.uploaded_by}}</span>
+                <span v-if="doc">Date Shared: {{doc.created_at | formatDate }}</span>
+            </div>
             <button class="download-btn" type="button">Download<i class="fas fa-file-download"></i></button>
         </div>
     </div>
@@ -56,7 +60,7 @@ export default {
         }
   },
     watch: {
-        'docs': function(value) {
+        docs(value) {
             if(value.length > 0) {
                 this.$store.dispatch('getDoc', value[0].id)
                 this.current = value[0].id
@@ -129,24 +133,41 @@ export default {
     position: relative;
     padding: 10px;
     box-sizing: border-box;
-}
 
-.download-btn {
-    background: #0077ff;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 30px;
-    position: absolute;
-    bottom: 30px;
-    right: 17%;
-    cursor: pointer;
+    h3 {
+        border-bottom: 2px solid #0077ff;
+        padding-bottom: 10px;
+        margin-bottom: 3px;
+    }
 
-    .fas {
-        margin-left: 10px;
+    .doc-details {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+
+        span {
+            font-size: .9rem;
+        }
+    }
+
+    .download-btn {
+        background: #0077ff;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 30px;
+        position: absolute;
+        bottom: 30px;
+        right: 17%;
+        cursor: pointer;
+
+        .fas {
+            margin-left: 10px;
+        }
     }
 }
+
 
 
 </style>
