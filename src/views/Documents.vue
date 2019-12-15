@@ -16,8 +16,12 @@
         <div class="docs-right">
             <h3 v-if="doc">{{doc.document_name}}</h3>
             <div class="doc-details">
-                <span v-if="doc">Shared By: {{doc.uploaded_by}}</span>
-                <span v-if="doc">Date Shared: {{doc.created_at | formatDate }}</span>
+                <div>
+                    <span v-if="doc">Shared By: </span><span>{{doc.uploaded_by}}</span>
+                </div>
+                <div>
+                    <span v-if="doc">Date Shared: </span><span>{{doc.created_at | formatDate }}</span>
+                </div>
             </div>
             <button class="download-btn" type="button">Download<i class="fas fa-file-download"></i></button>
         </div>
@@ -138,6 +142,7 @@ export default {
         border-bottom: 2px solid #0077ff;
         padding-bottom: 10px;
         margin-bottom: 3px;
+        margin-top: 0;
     }
 
     .doc-details {
@@ -145,9 +150,15 @@ export default {
         display: flex;
         flex-direction: column;
 
-        span {
-            font-size: .9rem;
+        div {
+            display: flex;
+            justify-content: space-between;
+
+            span {
+                font-size: .9rem;
+            }
         }
+
     }
 
     .download-btn {

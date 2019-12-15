@@ -78,16 +78,11 @@ export default {
         this.client_id = client_id
         localStorage.setItem('client_id', client_id)
       }
-    } 
-    // else {
-    //   this.$router.push('/login')
-    //   toastError('You must be invited to view that page')
-    // }
+    } else {
+      this.$router.push('/login')
+      toastError('You must be invited to view the register form')
+    }
   }
 }
 </script>
-
-<style lang="scss">
-
-</style>
 
