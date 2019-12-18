@@ -55,7 +55,19 @@ export default new Router({
       meta: {
         layout: 'default',
         requiresAuth: true
-      }
+      },
+      children: [
+        {
+          path: 'pdf/:id',
+          name: 'document',
+          component: () => import(/* webpackChunkName: "about" */ './views/Document.vue'),
+          props: true,
+          meta: {
+            layout: 'default',
+            requiresAuth: true
+          },
+        }
+      ]
     },
   ]
 })

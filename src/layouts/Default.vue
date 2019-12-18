@@ -1,7 +1,7 @@
 <template>
     <div class="default">
         <Navbar />
-        <div v-if="$route.path != '/documents'">
+        <div v-if="$route.name != 'document'">
             <img class="logo" v-if="account && account.logo" v-bind:src="logo"/>
             <i class="far fa-folder-open fa-5x" v-else></i>
         </div>

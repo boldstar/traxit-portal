@@ -1,6 +1,7 @@
 <template>
     <div class="document" ref="document"  :class="{'hide-overflow': file && file.payment_required}">
         <nav class="toolbar">
+            <button class="back-btn" @click="goBack()"><i class="fas fa-chevron-left"></i> Back</button>
             <span>Page: <input type="number" v-model="currentPage" @click="scrollTo($event)" @keyup="scrollTo($event)" :min="1" :max="numPages">/{{numPages}}</span>
             <span>Zoom: <strong>{{100 + currentZoom + '%  '}}</strong><button class="zoom-btn" type="button" @click="zoomIn()"><i class="fas fa-search-plus"></i></button>|<button class="zoom-btn" type="button" @click="zoomOut"><i class="fas fa-search-minus"></i></button></span>
         </nav>
@@ -95,6 +96,9 @@ export default {
                     page.style.width = JSON.stringify(this.startingZoom+this.currentZoom)+'%'
                 }
             }
+        },
+        goBack() {
+            this.$router.push('/documents')
         }
     },
     watch: {
@@ -209,5 +213,29 @@ input[type=number]::-webkit-inner-spin-button {
     cursor: pointer;
     border: none;
     font-size: 1.25rem;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #0077ff;
+    font-weight: bold;
+    display: flex;
+    font-size: 1.3rem;
+    position: absolute;
+    left: 0;
+    height: 48px;
+    top: 0;
+    border-right: 1px solid black;
+    cursor: pointer;
+
+    i {
+        margin-right: 10px;
+        margin-top: 2px;
+    }
+
+    &:hover {
+        background: lightgray;
+    }
 }
 </style>

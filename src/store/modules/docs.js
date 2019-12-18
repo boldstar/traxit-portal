@@ -3,14 +3,18 @@ import axios from 'axios'
 export default {
     state: {
         docs: [],
-        doc: ''
+        doc: '',
+        doc_details: null
     },
     getters: {
         docs(state) {
             return state.docs
         },
-        current_doc(state) {
+        doc(state) {
             return state.doc
+        },
+        doc_details(state) {
+            return state.doc_details
         }
     },
     mutations: {
@@ -19,6 +23,9 @@ export default {
         },
         CURRENT_DOC(state, doc) {
             state.doc = doc
+        },
+        CURRENT_DOC_DETAILS(state, doc) {
+            state.doc_details = doc
         }
     },
     actions: {
@@ -39,6 +46,16 @@ export default {
                 provider: 'guests'
             },{responseType:'blob'}).then(res => {
                 commit('CURRENT_DOC', res.data)
+            }).catch(err => {
+                console.log(err.response.data)
+            })
+        },
+        getDocDetails({commit}, id) {
+            axios.post('/get-guest-document-details', {
+                id:id,
+                provider: 'guests'
+            }).then(res => {
+                commit('CURRENT_DOC_DETAILS', res.data)
             }).catch(err => {
                 console.log(err.response.data)
             })
