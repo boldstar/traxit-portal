@@ -4,7 +4,7 @@
                 :loaded="doc"
                 :data="url"
                 v-if="url"
-                :file="doc"
+                :file="doc_details"
              />
         <div class="docs-right">
             <div v-if="doc_details">
