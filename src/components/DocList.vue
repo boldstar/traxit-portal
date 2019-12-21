@@ -18,7 +18,7 @@
                     <th>Shared By</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody v-if="sortedDocs">
                 <tr v-for="(doc, index) in sortedDocs" :key="index" @click="showDoc(doc)">
                     <th style="padding: 10px 30px!important;"><i class="far fa-file-pdf"></i></th>
                     <td>{{doc.tax_year}}</td>
@@ -29,6 +29,10 @@
                 </tr>
             </tbody>
         </table>
+        <div v-if="sortedDocs && sortedDocs.length < 1" class="no-docs">
+            <i class="fas fa-file-alt"></i>
+            <p>There are currently<br> no documents to view</p>   
+        </div>
     </div>
 </template>
 
@@ -100,6 +104,8 @@ export default {
             this.filterYear = 'All'
             this.filterPayment = 'All'
             this.filterSignature = 'All'
+            this.search = ''
+            this.currentSort = 'document_name'
         }
     }
 }
@@ -113,6 +119,16 @@ export default {
         flex-direction: column;
         align-items: center;
         margin: 0 auto;
+        height: 100%;
+        max-height: calc(100vh - 300px);
+        min-height: calc(100vh - 300px);
+        overflow-y: scroll;
+        padding: 10px;
+
+        /*width*/
+        &::-webkit-scrollbar {
+            display: none!important;
+        }
 
         .search-input {
             width: 100%;
@@ -196,6 +212,32 @@ export default {
                     }
                 }
             }
+        }
+    }
+
+    .no-docs {
+        padding: 40px;
+        position: relative;
+        margin-top: 30px;
+
+
+        i {
+            font-size: 5.5rem;
+            color: #0077ff;
+        }
+
+        &:after {
+            content: "";
+            display: block;
+            height: 250px;
+            width: 250px;
+            border-radius: 50%;
+            border: 2px solid lightgray;
+            background: rgb(238, 238, 238);
+            position: absolute;
+            top: 0;
+            left: -5px;
+            z-index: -1;
         }
     }
 </style>

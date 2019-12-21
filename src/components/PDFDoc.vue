@@ -163,31 +163,32 @@ input[type=number]::-webkit-inner-spin-button {
         border-bottom: 1px solid black;
     }
 
+    /*width*/
+    &::-webkit-scrollbar {
+        width: 10px!important;
+    }
+
+        /* Track */
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1!important; 
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: #888; 
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+    }
 }
 
 .hide-overflow {
     overflow-y: hidden!important;
 }
 
-/*width*/
-#document::-webkit-scrollbar {
-    width: 10px!important;
-}
 
-    /* Track */
-#document::-webkit-scrollbar-track {
-    background: #f1f1f1!important; 
-}
-
-/* Handle */
-#document::-webkit-scrollbar-thumb {
-    background: #888; 
-}
-
-/* Handle on hover */
-#document::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-}
 
 .loading {
     margin-top: 50px;
@@ -218,10 +219,10 @@ input[type=number]::-webkit-inner-spin-button {
 .back-btn {
     background: none;
     border: none;
-    color: #0077ff;
+    color: black;
     font-weight: bold;
     display: flex;
-    font-size: 1.3rem;
+    font-size: 1rem;
     position: absolute;
     left: 0;
     height: 48px;
@@ -231,7 +232,8 @@ input[type=number]::-webkit-inner-spin-button {
 
     i {
         margin-right: 10px;
-        margin-top: 2px;
+        font-size: 1.2rem;
+        color: #0077ff;
     }
 
     &:hover {

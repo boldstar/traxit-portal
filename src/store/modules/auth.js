@@ -13,10 +13,14 @@ localStorage.getItem('account_fqdn') ? axios.defaults.baseURL = 'http://' + loca
 export default {
     state: {
         token: localStorage.getItem('access_token') || null,
+        guest: null
     },
     getters: {
         loggedIn(state) {
             return state.token;
+          },
+          guest(state) {
+              return state.gueset
           }
     },
     mutations: {
@@ -37,6 +41,12 @@ export default {
         errorAlert(state, alert) {
             state.errorAlert = alert
         },
+        setClient(state, guest) {
+            state.guest = guest
+            if(guest) {
+                localStorage.setItem('client_id', guest.id)
+            }
+        }
     },
     actions: {
         registerGuest({commit}, data) {
@@ -59,12 +69,14 @@ export default {
                     destroySession()
                     context.commit('destroyToken')
                     router.push('/login')
+                    context.commit('ALL_DOCS', [])
                     resolve(response)
                 })
                 .catch(error => {
                     destroySession()
                     context.commit('destroyToken')
                     router.push('/login')
+                    context.commit('ALL_DOCS', [])
                     reject(error)
                 })
               })
@@ -80,6 +92,7 @@ export default {
                 })
                 .then(response => {
                     commit('clearAlert')
+                    commit('setClient', response.data.guest)
                     // start session sets a couple of the local storage items and make sure that the response contains the proper data
                     if(startSession(response)) {
                         setTimeout(() => {

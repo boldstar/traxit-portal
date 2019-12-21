@@ -13,6 +13,10 @@
           <input :class="{'error-input': errors && errors.length > 0}" type="password" placeholder="Password" class="input" v-model="password">
           <span class="error-text">{{ errors[0] }}</span>
         </validation-provider>
+        <validation-provider name="Confirm Password" :rules="'required|confirm:'+`${password}`" v-slot="{errors}" class="validation-container">
+          <input :class="{'error-input': errors && errors.length > 0}" type="password" placeholder="Confirm Password" class="input" v-model="confirm_password">
+          <span class="error-text">{{ errors[0] }}</span>
+        </validation-provider>
         <button type="submit" class="submit-btn" :disabled="processing">
           <span v-if="processing">Please wait...</span>
           <span v-else>Register</span>
@@ -48,6 +52,7 @@ export default {
     return {
       email: '',
       password: '',
+      confirm_password: '',
       client_id: null,
       noData: false
     }

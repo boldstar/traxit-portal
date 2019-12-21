@@ -48,3 +48,9 @@ extend('spec_char', {
         return strongRegex.test(value);
     }
 });
+extend('confirm', {
+    message: `Password does not match`,
+    validate: (value, args) => {
+       return value === args[0] ? true : false
+    }
+});
