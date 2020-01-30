@@ -17,7 +17,9 @@
                         <span v-if="doc_details.created_at">Date Shared: </span><span>{{doc_details.created_at | formatDate }}</span>
                     </div>
                 </div>
-                <button class="download-btn" type="button">Download<i class="fas fa-file-download"></i></button>
+                <div v-if="!doc_details.payment_required && !doc_details.signature_required">
+                    <button class="download-btn" type="button" @click="download">Download<i class="fas fa-file-download"></i></button>
+                </div>
             </div>
         </div>
     </div>
@@ -39,6 +41,18 @@ export default {
             var blob = URL.createObjectURL(new Blob([this.doc]))
             return blob
         },
+    },
+    methods: {
+        download() {
+            const url = window.URL.createObjectURL(new Blob([this.doc]));
+            const link = document.createElement('a');
+            const random_num = JSON.stringify(Math.random()).replace('.', '')
+            const file_name = this.doc_details.document_name
+            link.href = url;
+            link.setAttribute('download', file_name);
+            document.body.appendChild(link);
+            link.click();
+        }
     },
     created() {
         this.$store.dispatch('getDoc', this.$route.params.id)

@@ -1,30 +1,26 @@
 <template>
     <div class="doc-list">
         <input type="text" class="search-input" placeholder="Search by name" v-model="search">
-        <div class="dropdowns">
-            <Dropdown :options="taxYears" :label="'Tax Year'" v-model="filterYear" />
-            <Dropdown :options="paymentRequired" :label="'Payment Required'" v-model="filterPayment" />
-            <Dropdown :options="signatureRequired" :label="'Signature Required'" v-model="filterSignature" />
-            <button class="clear-btn" @click="clearFilters()" v-if="filtered">Clear</button>
+        <div class="doc-tabs">
+            <button class="clear-btn" @click="clearFilters()" v-if="filtered">Clear Filters</button>
+            <DocTab :filter_tab="'All'" @filter="filterNone" :active="show_all" />
+            <DocTab :filter_tab="'Needs Payment'" @filter="filterPayment" :active="payment_required" />
+            <DocTab :filter_tab="'Needs Signature'" @filter="filterSignature" :active="signature_required" />
         </div>
         <table class="doc-list-table">
             <thead>
                 <tr>
                     <th>Type</th>
-                    <th @click="sort('tax_year')" style="cursor: pointer;">Tax Year</th>
                     <th>Name</th>
-                    <th><i class="fas fa-file-invoice-dollar"></i></th>
-                    <th><i class="fas fa-file-signature"></i></th>
+                    <th style="cursor: pointer;"><Dropdown :options="taxYears" :label="'Tax Year'" v-model="filterYear" class="tax-year-dropdown" /></th>
                     <th>Shared By</th>
                 </tr>
             </thead>
             <tbody v-if="sortedDocs">
                 <tr v-for="(doc, index) in sortedDocs" :key="index" @click="showDoc(doc)">
                     <th style="padding: 10px 30px!important;"><i class="far fa-file-pdf"></i></th>
+                    <td>{{doc.document_name}}</td>
                     <td>{{doc.tax_year}}</td>
-                    <td style="text-align: left; padding-left: 20px!important;">{{doc.document_name}}</td>
-                    <td><span v-if="doc.payment_required"><i class="fas fa-check"></i></span><span v-else><i class="fas fa-times"></i></span></td>
-                    <td><span v-if="doc.signature_required"><i class="fas fa-check"></i></span><span v-else><i class="fas fa-times"></i></span></td>
                     <td>{{doc.uploaded_by}}</td>
                 </tr>
             </tbody>
@@ -39,18 +35,20 @@
 <script>
 import {mapGetters} from 'vuex'
 import Dropdown from '@/components/Dropdown'
+import DocTab from '@/components/DocTab'
 export default {
     name: 'DocList',
     props: ['allDocs'],
-    components: {Dropdown},
+    components: {Dropdown, DocTab},
     data() {
         return {
             search: '',
             currentSort: 'document_name',
             currentSortDir: 'asc',
-            filterYear: 'All',
-            filterPayment: 'All',
-            filterSignature: 'All'
+            show_all: true,
+            payment_required: false,
+            signature_required: false,
+            filterYear: 'All'
         }
     },
     computed: {
@@ -61,14 +59,8 @@ export default {
 
             return result
         },
-        paymentRequired() {
-            return [true, false]
-        },
-        signatureRequired() {
-            return [true, false]
-        },
         filtered() {
-            if(this.filterYear != 'All' || this.filterPayment != 'All' || this.filterSignature != 'All') {
+            if(this.filterYear != 'All') {
                 return true
             } else return false
         },
@@ -82,9 +74,9 @@ export default {
             }).filter(doc => {
               if(this.filterYear === 'All'){ return doc } else{ return doc.tax_year === this.filterYear} 
             }).filter(doc => {
-              if(this.filterPayment === 'All'){ return doc } else{ return doc.payment_required == this.filterPayment} 
+              if(!this.payment_required){ return doc } else{ return doc.payment_required == this.payment_required} 
             }).filter(doc => {
-              if(this.filterSignature === 'All'){ return doc } else{ return doc.signature_required == this.filterSignature} 
+              if(!this.signature_required){ return doc } else{ return doc.signature_required == this.signature_required} 
             }).filter(doc => {
             return !this.search || doc.document_name.toLowerCase().indexOf(this.search.toLowerCase()) >= 0 })
         },
@@ -106,6 +98,22 @@ export default {
             this.filterSignature = 'All'
             this.search = ''
             this.currentSort = 'document_name'
+        },
+        filterNone() {
+            this.show_all = true
+            this.payment_required = false
+            this.signature_required = false
+        },
+        filterPayment() {
+            this.show_all = false
+            this.payment_required = true
+            this.signature_required = false
+        },
+        filterSignature() {
+            this.show_all = false
+            this.payment_required = false
+            this.signature_required = true
+
         }
     }
 }
@@ -139,14 +147,20 @@ export default {
             font-size: 1.25rem;
         }
 
-        .dropdowns {
+        .doc-tabs {
             width: 100%;
             box-sizing: border-box;
-            padding: 10px;
             border-left: 2px solid lightgray;
             border-right: 2px solid lightgray;
             display: flex;
             position: relative;
+            background: rgb(238, 238, 238);
+            padding-top: 5px;
+
+            .tax-year-dropdown {
+                align-self:  center;
+                margin: 0 30px;
+            }
 
             .clear-btn {
                 position: absolute;
@@ -168,9 +182,10 @@ export default {
 
                 tr {
                         border: 1px solid rgb(204, 204, 204);
-                        box-shadow: 0 0 10px 0 rgba(0,0,0,.3);
+                        border-top: none;
+                        box-shadow: 0 0 5px 0 rgba(0,0,0,.3);
                     th {
-                        padding: 15px 0;
+                        padding: 10px 0;
                         font-size: 14px;
 
                         i {
@@ -241,3 +256,6 @@ export default {
         }
     }
 </style>
+
+// <th><i class="fas fa-file-invoice-dollar"></i></th>
+//                     <th><i class="fas fa-file-signature"></i></th>

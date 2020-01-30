@@ -118,6 +118,12 @@ export default {
     color: red;
   }
 
+  i {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+  }
+
   .error-input {
     border: 3px solid red;
   }

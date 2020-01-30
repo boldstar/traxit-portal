@@ -59,6 +59,7 @@ export default {
             }).catch(error => {
                 commit('PROCESSING')
                 console.log(error.response.data)
+                toastError(error.response.data.message)
             })
         },
         destroyToken(context) {
