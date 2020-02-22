@@ -59,7 +59,7 @@ export default new Vuex.Store({
   },
   actions: {
     getAccount(context) {
-      axios.get('https://'+router.history.current.query.fqdn+'.traxit.pro/api/account')
+      axios.get('http://'+fqdn+'.traxit.test/api/account')
       .then(response => {
         context.commit('SET_ACCOUNT', response.data[0])
       })
