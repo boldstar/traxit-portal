@@ -7,12 +7,15 @@ import router from './router'
 Vue.use(Vuex)
 Vue.use(Toasted)
 
+var fqdn = router.history.current.query.fqdn ? router.history.current.query.fqdn : localStorage.getItem('account_fqdn')
+
 export default new Vuex.Store({
   state: {
     account: null,
     files_state: false,
     upload_success: false,
     processing: false,
+    show_code_modal: false,
     client:  {
       first_name: '',
       last_name: '',
@@ -34,6 +37,9 @@ export default new Vuex.Store({
     },
     client(state) {
       return state.client
+    },
+    showCodeModal(state) {
+      return state.show_code_modal
     }
   },
   mutations: {
@@ -48,6 +54,9 @@ export default new Vuex.Store({
     },
     PROCESSING(state) {
       state.processing = !state.processing
+    },
+    CODE_MODAL(state) {
+      state.show_code_modal = !state.show_code_modal
     },
     RESET_CLIENT(state) {
       state.client =  {
@@ -67,15 +76,31 @@ export default new Vuex.Store({
         console.log(error.response.data)
       })
     },
+    createCode(context, data) {
+      axios.post('http://'+fqdn+'.traxit.test/api/code', data)
+      .then(response => {
+        context.commit('CODE_MODAL')
+      }).catch(error => {
+        console.log(error.response.data)
+      })
+    },
+    confirmCode(context, data) {
+      axios.post('http://'+fqdn+'.traxit.test/api/confirm', data)
+      .then(response => {
+        context.commit('CODE_MODAL')
+      }).catch(error => {
+        console.log(error.response.data)
+      })
+    },
     submitFiles(context, data) {
       let formData = new FormData();
       for( var i = 0; i < data.files.length; i++ ){
         let file = data.files[i];
         formData.append('files[' + i + ']', file);
       } formData.append('data', JSON.stringify(data.details))
-        formData.append('fqdn', router.history.current.query.fqdn)
+        formData.append('fqdn', fqdn)
       context.commit('PROCESSING')
-      axios.post('https://'+router.history.current.query.fqdn+'.traxit.pro/api/files', formData, {headers: {
+      axios.post('http://'+fqdn+'.traxit.test/api/files', formData, {headers: {
         'Content-Type': 'multipart/form-data'
       }})
       .then(response => {

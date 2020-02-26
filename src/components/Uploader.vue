@@ -8,6 +8,7 @@
         <div class="file-manager">
             <FileManager @submit-files="sendFiles" />
         </div>
+        <ConfirmCode v-if="showCodeModal" @code-confirmed="sendFiles" />
     </div>
 </template>
 
@@ -15,23 +16,38 @@
 import ClientInfo from '@/components/ClientInfo.vue'
 import FileManager from '@/components/FileManager.vue'
 import Spinner from '@/components/Spinner.vue'
+import ConfirmCode from '@/components/ConfirmCode.vue'
 import {mapGetters} from 'vuex'
 export default {
     name: 'Uploader',
     components: {
         ClientInfo,
         FileManager,
-        Spinner
+        Spinner,
+        ConfirmCode
     },
     data() {
         return {
             errors: [],
+            details: null
         }
     },
     computed: {
-        ...mapGetters(['upload_success', 'processing', 'client', 'account'])
+        ...mapGetters(['upload_success', 'processing', 'client', 'account', 'showCodeModal'])
     },
     methods: {
+        requestToSend(data) {
+            this.details = data
+            const validated = this.validate(this.client)
+            if(validated) {
+                this.$store.dispatch('createCode', this.client)
+                .then(response => {
+                    $this.state.commit('CODE_MODAL')
+                }).catch(erro => {
+                    console.log(response.data)
+                })
+            }
+        },
         sendFiles(data) {
             const validated = this.validate(this.client)
             const files = data.files.map(file => file)
