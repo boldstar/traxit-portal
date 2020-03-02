@@ -16,6 +16,8 @@ export default new Vuex.Store({
     upload_success: false,
     processing: false,
     show_code_modal: false,
+    requesting_code: false,
+    confirming_code: false,
     client:  {
       first_name: '',
       last_name: '',
@@ -40,6 +42,12 @@ export default new Vuex.Store({
     },
     showCodeModal(state) {
       return state.show_code_modal
+    },
+    requesting_code(state) {
+      return state.requesting_code
+    },
+    confirming_code(state) {
+      return state.confirming_code
     }
   },
   mutations: {
@@ -57,6 +65,12 @@ export default new Vuex.Store({
     },
     CODE_MODAL(state) {
       state.show_code_modal = !state.show_code_modal
+    },
+    REQEUSTING_CODE(state) {
+      state.requesting_code = !state.requesting_code
+    },
+    CONFIRMING_CODE(state) {
+      state.confirming_code = !state.confirming_code
     },
     RESET_CLIENT(state) {
       state.client =  {
@@ -77,19 +91,55 @@ export default new Vuex.Store({
       })
     },
     createCode(context, data) {
-      axios.post('http://'+fqdn+'.traxit.test/api/code', data)
-      .then(response => {
-        context.commit('CODE_MODAL')
-      }).catch(error => {
-        console.log(error.response.data)
+      return new Promise((resolve, reject) => {
+        axios.post('http://'+fqdn+'.traxit.test/api/create-code', data)
+        .then(response => {
+          resolve(response)
+        }).catch(error => {
+          console.log(error.response.data)
+          reject(error)
+        })
+      })
+    },
+    createNewCode(context, data) {
+      context.commit('REQEUSTING_CODE')
+      return new Promise((resolve, reject) => {
+        axios.post('http://'+fqdn+'.traxit.test/api/create-new-code', data)
+        .then(response => {
+          context.commit('REQEUSTING_CODE')
+          resolve(response)
+        }).catch(error => {
+          context.commit('REQEUSTING_CODE')
+          console.log(error.response.data)
+          reject(error)
+        })
       })
     },
     confirmCode(context, data) {
-      axios.post('http://'+fqdn+'.traxit.test/api/confirm', data)
-      .then(response => {
-        context.commit('CODE_MODAL')
-      }).catch(error => {
-        console.log(error.response.data)
+      context.commit('CONFIRMING_CODE')
+      return new Promise((resolve, reject) => {
+        axios.post('http://'+fqdn+'.traxit.test/api/confirm-code', {code: data})
+        .then(response => {
+          context.commit('CONFIRMING_CODE')
+          resolve(response)
+        }).catch(error => {
+          context.commit('CONFIRMING_CODE')
+          reject(error)
+          Vue.toasted.show(error.response.data, 
+          {
+            type: 'error', 
+            className: 'toast-message',
+            action: [
+              {
+                text: 'X',
+                onClick: (e, toastObject) => {
+                  toastObject.goAway(0)
+                },
+                className: 'close-btn'
+              }
+            ]
+          })
+        })
       })
     },
     submitFiles(context, data) {
@@ -104,7 +154,6 @@ export default new Vuex.Store({
         'Content-Type': 'multipart/form-data'
       }})
       .then(response => {
-        console.log(response.data)
         context.commit('PROCESSING')
         context.commit('FILES_KEY')
         context.commit('UPLOAD_SUCCESS')

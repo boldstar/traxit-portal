@@ -6,9 +6,9 @@
             <ClientInfo :data="client" :alarm="errors" @input-change="clear" :key="upload_success"  />
         </div>
         <div class="file-manager">
-            <FileManager @submit-files="sendFiles" />
+            <FileManager @submit-files="requestToSend" />
         </div>
-        <ConfirmCode v-if="showCodeModal" @code-confirmed="sendFiles" />
+        <ConfirmCode :client="client" v-if="showCodeModal" @code-confirmed="sendFiles" />
     </div>
 </template>
 
@@ -42,24 +42,27 @@ export default {
             if(validated) {
                 this.$store.dispatch('createCode', this.client)
                 .then(response => {
-                    $this.state.commit('CODE_MODAL')
-                }).catch(erro => {
-                    console.log(response.data)
+                    this.$store.commit('CODE_MODAL')
+                }).catch(error => {
+                    console.log(error)
                 })
             }
         },
         sendFiles(data) {
             const validated = this.validate(this.client)
-            const files = data.files.map(file => file)
+            const files = this.details.files.map(file => file)
+            this.$store.commit('CODE_MODAL')
             if(validated) {
                 this.$store.dispatch('submitFiles', {
                     files: files,
                     details: {
-                        subject: data.subject,
-                        message: data.message,
+                        subject: this.details.subject,
+                        message: this.details.message,
                         client: this.client
                     }
                 })
+            } else {
+                console.log('Something went wrong.')
             }
         },
         validate(client) {

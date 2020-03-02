@@ -21,11 +21,16 @@ export default {
   },
   components: {Spinner},
   created() {
-    var name = window.location.href
-    const index = name.indexOf('=')
-    var fqdn = name.slice(index + 1)
-    this.fileAccount = fqdn
-    this.$router.replace({query: {fqdn: fqdn}}).catch(err => {})
+    if(!localStorage.getItem('account_fqdn')) {
+      var name = window.location.href
+      const index = name.indexOf('=')
+      var fqdn = name.slice(index + 1)
+      this.fileAccount = fqdn
+      this.$router.replace({query: {fqdn: fqdn}}).catch(err => {})
+      localStorage.setItem('account_fqdn', fqdn)
+    } else {
+      this.fileAccount = localStorage.getItem('account_fqdn')
+    }
     this.$store.dispatch('getAccount')
   }
 }

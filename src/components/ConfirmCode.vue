@@ -3,20 +3,28 @@
       <div class="confirm-code-modal">
           <div class="confirm-code-header">
               <span>Confirm Code</span>
-              <button class="cancel-confirm-btn" type="button">X</button>
+              <button class="cancel-confirm-btn" type="button" @click="closeConfirmModal">X</button>
           </div>
           <div class="confirm-code-body">
-              <input type="text" class="confirm-code-input" placeholder="Enter Code">
-              <small>Locate code sent to email provided</small>
+                <input type="text" class="confirm-code-input" placeholder="Enter Code" v-model="code">
+                <small>Locate code sent to email provided</small>
+                <button class="request-new-code-btn" type="button" @click="requestNewCode">
+                    <span v-if="requesting_code">Requesting...</span>
+                    <span v-else>Request New Code</span>
+                </button>
           </div>
           <div class="confirm-code-footer">
-              <button class="confirm-code-btn" type="button" @click="sendCode">Confirm Code</button>
+                <button class="confirm-code-btn" type="button" @click="sendCode" :disabled="confirming_code">
+                   <span v-if="confirming_code">Confirming...</span>
+                   <span v-else>Confirm Code</span>
+                </button>
           </div>
       </div>
   </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
     name: 'ConfirmCode',
     props: ['client'],
@@ -24,6 +32,9 @@ export default {
         return {
             code: null
         }
+    },
+    computed: {
+        ...mapGetters(['confirming_code', 'requesting_code'])
     },
     methods: {
         sendCode() {
@@ -33,6 +44,12 @@ export default {
             }).catch(error => {
                 console.log(error.response.data)
             })
+        },
+        closeConfirmModal() {
+            this.$store.commit('CODE_MODAL')
+        },
+        requestNewCode() {
+            this.$store.dispatch('createNewCode', this.client)
         }
     }
 }
@@ -76,6 +93,7 @@ export default {
                     outline: none;
                     background: transparent;
                     font-size: 1.2rem;
+                    cursor: pointer;
                 }
             }
 
@@ -98,6 +116,14 @@ export default {
                     color: rgb(153, 153, 153);
                     font-weight: bold;
                 }
+
+                .request-new-code-btn {
+                    background: transparent;
+                    color: #0077ff;
+                    border: none;
+                    font-weight: bold;
+                    margin-top: 10px;
+                }
             }
 
 
@@ -110,6 +136,8 @@ export default {
                 color: white;
                 font-weight: bold;
                 font-size: 1.25rem;
+                cursor: pointer;
+                outline: none;
             }
         }
     }
