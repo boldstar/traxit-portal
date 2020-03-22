@@ -66,6 +66,7 @@ export default {
         justify-content: center;
         align-items: center;
         background: rgba(0,0,0,.5);
+        z-index: 1000;
 
         .confirm-code-modal {
             height: 300px;
