@@ -74,8 +74,10 @@ export default {
                 return
             }if(!this.subject) {
                 this.noSubject = true
+                return
             }if(!this.message) {
                 this.noMessage = true
+                return
             }
             this.$emit('submit-files', {files: this.files, subject: this.subject, message: this.message})
         },

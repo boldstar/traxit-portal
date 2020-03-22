@@ -91,11 +91,14 @@ export default new Vuex.Store({
       })
     },
     createCode(context, data) {
+      context.commit('PROCESSING')
       return new Promise((resolve, reject) => {
         axios.post('http://'+fqdn+'.traxit.test/api/create-code', data)
         .then(response => {
+          context.commit('PROCESSING')
           resolve(response)
         }).catch(error => {
+          context.commit('PROCESSING')
           console.log(error.response.data)
           reject(error)
         })
