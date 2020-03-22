@@ -82,7 +82,7 @@ export default new Vuex.Store({
   },
   actions: {
     getAccount(context) {
-      axios.get('http://'+fqdn+'.traxit.test/api/account')
+      axios.get('https://'+fqdn+'.traxit.pro/api/account')
       .then(response => {
         context.commit('SET_ACCOUNT', response.data[0])
       })
@@ -93,7 +93,7 @@ export default new Vuex.Store({
     createCode(context, data) {
       context.commit('PROCESSING')
       return new Promise((resolve, reject) => {
-        axios.post('http://'+fqdn+'.traxit.test/api/create-code', data)
+        axios.post('https://'+fqdn+'.traxit.pro/api/create-code', data)
         .then(response => {
           context.commit('PROCESSING')
           resolve(response)
@@ -107,7 +107,7 @@ export default new Vuex.Store({
     createNewCode(context, data) {
       context.commit('REQEUSTING_CODE')
       return new Promise((resolve, reject) => {
-        axios.post('http://'+fqdn+'.traxit.test/api/create-new-code', data)
+        axios.post('https://'+fqdn+'.traxit.pro/api/create-new-code', data)
         .then(response => {
           context.commit('REQEUSTING_CODE')
           resolve(response)
@@ -121,7 +121,7 @@ export default new Vuex.Store({
     confirmCode(context, data) {
       context.commit('CONFIRMING_CODE')
       return new Promise((resolve, reject) => {
-        axios.post('http://'+fqdn+'.traxit.test/api/confirm-code', {code: data})
+        axios.post('https://'+fqdn+'.traxit.pro/api/confirm-code', {code: data})
         .then(response => {
           context.commit('CONFIRMING_CODE')
           resolve(response)
@@ -153,7 +153,7 @@ export default new Vuex.Store({
       } formData.append('data', JSON.stringify(data.details))
         formData.append('fqdn', fqdn)
       context.commit('PROCESSING')
-      axios.post('http://'+fqdn+'.traxit.test/api/files', formData, {headers: {
+      axios.post('https://'+fqdn+'.traxit.pro/api/files', formData, {headers: {
         'Content-Type': 'multipart/form-data'
       }})
       .then(response => {
